@@ -5,7 +5,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>0221f4b6-f789-4522-82c8-6eddd61e7299</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>Concurrency_ReadBigFile.py</StartupFile>
+    <StartupFile>hit_logger.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -22,6 +22,9 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="hit_logger.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Parallel_ReadBigFile.py" />
     <Compile Include="Concurrency_ThreadPool.py" />
     <Compile Include="Concurrency_ProducerConsumer_Queue.py" />
