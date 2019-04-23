@@ -1,6 +1,6 @@
 import os
-from concurrent.futures import ThreadPoolExecutor
 from threading import Lock
+from multiprocessing.dummy import Pool
 
 def process_chunk(input_file, output_file, chunk_start, chunk_end, lock):
     lines_read = 0
@@ -11,12 +11,16 @@ def process_chunk(input_file, output_file, chunk_start, chunk_end, lock):
             while read_pos < chunk_end:
                 in_f.seek(read_pos) # file.seek counts in \r\n
                 line = in_f.readline()
-                read_pos = in_f.tell()
+                new_read_pos = in_f.tell()
+                if read_pos == new_read_pos: # No line to read
+                    break
 
                 with lock:
                     out_f.write(line)
 
                 lines_read += 1
+                read_pos = new_read_pos
+                print('read_pos: {}, chunk_end: {}'.format(read_pos, chunk_end))
 
     return lines_read
 
@@ -35,15 +39,15 @@ def chunkify(file_name, chunk_size):
             yield chunk_start, chunk_end
 
 def main():
-    pool = ThreadPoolExecutor(10)
-
     input_file = './input.txt'
     output_file = './output.txt'
 
-    threads = []
+    pool = Pool(1)
     lock = Lock()
-    for chunk_start, chunk_end in chunkify(input_file, 10):
-        threads.append(pool.submit(process_chunk, input_file, output_file, chunk_start, chunk_end, lock))
+    pool.starmap(process_chunk, [ ( input_file, output_file, chunk_start, chunk_end, lock ) for chunk_start, chunk_end in chunkify(input_file, 10) ])
+
+    pool.close()
+    pool.join()
 
 if __name__ == '__main__':
     main()
