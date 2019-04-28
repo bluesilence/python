@@ -1,3 +1,5 @@
+# https://www.1point3acres.com/bbs/forum.php?mod=viewthread&tid=308308
+
 import collections
 # https://pypi.org/project/bintrees/
 from bintrees import AVLTree
@@ -14,6 +16,16 @@ class KVStore:
 
         # Set in a balanced BST: O(logN)
         tree[new_version] = value
+
+    def unset(self, k):
+        if k not in self.hashmap:
+            raise KeyError('Key {} not found.'.format(k))
+
+        tree = self.hashmap[k]
+        last_version = len(tree) - 1
+
+        # Remove from a balanced BST: O(logN)
+        return tree.pop(last_version) # Remove last version
 
     def get(self, k):
         if k not in self.hashmap:
@@ -45,6 +57,8 @@ class TestKVStore(unittest.TestCase):
         kvStore.set('a', 2)
         self.assertEqual(kvStore.get('a'), 2)
         self.assertEqual(kvStore.getValueWithVersion('a', 0), 1)
+        kvStore.unset('a')
+        self.assertEqual(kvStore.get('a'), 1)
 
         kvStore.set('b', 3)
         self.assertRaises(ValueError, kvStore.getValueWithVersion, 'b', 1)
