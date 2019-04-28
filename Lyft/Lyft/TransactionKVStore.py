@@ -8,6 +8,12 @@ class TransactionKVStore(object):
         self.operationsStack = []
         self.currentBlock = []
 
+    def loadLastBlock(self):
+        if self.operationsStack:
+            self.currentBlock = self.operationsStack.pop()
+        else:
+            self.currentBlock = []
+
     def processLine(self, line):
         if line == 'BLOCK':
             if self.currentBlock:
@@ -17,15 +23,9 @@ class TransactionKVStore(object):
             for command in self.currentBlock:
                 self.kvStore.processLine(command)
 
-            if self.operationsStack:
-                self.currentBlock = self.operationsStack.pop()
-            else:
-                self.currentBlock = []
+            self.loadLastBlock()
         elif line == 'ROLLBACK':
-            if self.operationsStack:
-                self.currentBlock = self.operationsStack.pop()
-            else:
-                self.currentBlock = []
+            self.loadLastBlock()
         else:
             self.currentBlock.append(line)
 
