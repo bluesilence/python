@@ -5,7 +5,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>d116ecfb-a3e0-43ba-a8ea-5c8f90cbd01a</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>DelayQueue.py</StartupFile>
+    <StartupFile>VersionedKVStore.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -23,6 +23,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="DelayQueue.py" />
+    <Compile Include="VersionedKVStore.py">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
