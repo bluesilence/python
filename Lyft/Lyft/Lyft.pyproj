@@ -5,7 +5,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>d116ecfb-a3e0-43ba-a8ea-5c8f90cbd01a</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>VersionedKVStore.py</StartupFile>
+    <StartupFile>TransactionKVStore.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -22,10 +22,20 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="APICalls.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="DelayQueue.py" />
+    <Compile Include="TransactionKVStore.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="VersionedKVStore.py">
       <SubType>Code</SubType>
     </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="transactions2.txt" />
+    <Content Include="transactions1.txt" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

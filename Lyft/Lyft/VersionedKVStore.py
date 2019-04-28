@@ -71,6 +71,18 @@ class KVStore:
         else:
             raise NotImplementedError('Unsupported command: {}'.format(command))
 
+    def serialize(self):
+        result = []
+        for key in sorted(self.hashmap.keys()):
+            tree = self.hashmap[key]
+
+            if len(tree):
+                result.append('Key {}:'.format(key))
+                for version in range(len(tree)):
+                    result.append('Version {}: {}'.format(version, tree[version]))
+
+        return ' '.join(result)
+
 class TestKVStore(unittest.TestCase):
     def test_store(self):
         kvStore = KVStore()
@@ -101,6 +113,15 @@ class TestKVStore(unittest.TestCase):
         kvStore.processLine('SET a 3')
         self.assertEqual(kvStore.processLine('GET a'), '3')
         self.assertEqual(kvStore.processLine('GETVERSION a 1'), '3')
+
+    def test_serialize(self):
+        kvStore = KVStore()
+        kvStore.set('a', 1)
+        kvStore.set('a', 2)
+        kvStore.set('b', 3)
+        serialized = kvStore.serialize()
+
+        self.assertEqual(serialized, 'Key a: Version 0: 1 Version 1: 2 Key b: Version 0: 3')
 
 if __name__ == '__main__':
     unittest.main()
